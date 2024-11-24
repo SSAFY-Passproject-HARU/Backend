@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.haru.model.mapper.RoomMapper">
+
+    <!-- 매물 정보 추가 -->
+    <insert id="insertRoom" useGeneratedKeys="true" keyProperty="roomId" parameterType="com.ssafy.haru.model.RoomDto">
+        INSERT INTO roominfos (user_id, title, description, price, apt_seq, favorite)
+        VALUES (#{userId}, #{title}, #{description}, #{price}, #{aptSeq}, #{favorite})
+    </insert>
+    
+    <!-- 매물 이미지 정보 추가 -->
+    <insert id="insertRoomImages" parameterType="list">
+        INSERT INTO roomimages (room_id, image_url)
+        VALUES
+        <foreach collection="list" item="image" separator=",">
+            (#{image.roomId}, #{image.imageUrl})
+        </foreach>
+    </insert>
+
+</mapper>

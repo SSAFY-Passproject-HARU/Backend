@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.passproject.model.mapper.HomeInfoMapper">
+
+	<!-- DB상 Member column과 Mybatis상 Member를 매핑 -->
+	<resultMap type="HomeInfoDto" id="homeInfo">
+		<result column="sido_name" property="sido" />
+		<result column="gugun_name" property="gugun" />
+		<result column="dong_name" property="dong" />
+		<result column="apt_seq" property="aptSeq" />
+		<result column="apt_nm" property="aptName" />
+		<result column="jibun" property="jibun" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
+	</resultMap>
+
+	<!-- query -->
+	<select id="select" parameterType="map" resultMap="homeInfo">
+		SELECT sido_name, gugun_name, dong_name, apt_seq, apt_nm, jibun, latitude, longitude
+		FROM houseinfos join dongcodes
+		ON (umd_nm = dong_name)
+		WHERE dong_code like #{dongCode};
+	</select>
+	<select id="selectAll" resultMap="homeInfo">
+		select d.sido_name,
+		d.gugun_name, d.dong_name, h.apt_seq, h.apt_nm, h.jibun, h.latitude,
+		h.longitude
+		from dongcodes d join houseinfos h
+		on(d.dong_name = h.umd_nm
+		and left(d.dong_code,5) = h.sgg_cd)
+		limit 0 , 30
+	</select>
+
+	<select id="selectBySido" parameterType="String"
+		resultMap="homeInfo">
+		select d.sido_name, d.gugun_name, d.dong_name, h.apt_seq,
+		h.apt_nm,h.jibun, h.latitude, h.longitude
+		from dongcodes d join
+		houseinfos h
+		on(d.dong_name = h.umd_nm and left(d.dong_code,5) =
+		h.sgg_cd)
+		where sido_name = #{pSido}
+	</select>
+
+	<select id="selectByGugun" parameterType="map"
+		resultMap="homeInfo">
+		select d.sido_name, d.gugun_name, d.dong_name, h.apt_seq,
+		h.apt_nm,h.jibun, h.latitude, h.longitude
+		from dongcodes d join
+		houseinfos h
+		on(d.dong_name = h.umd_nm and left(d.dong_code,5) =
+		h.sgg_cd)
+		where sido_name = #{pSido} and gugun_name = #{pGugun}
+	</select>
+
+	<select id="selectByDong" parameterType="map"
+		resultMap="homeInfo">
+		select d.sido_name, d.gugun_name, d.dong_name, h.apt_seq,
+		h.apt_nm,h.jibun, h.latitude, h.longitude
+		from dongcodes d join
+		houseinfos h
+		on(d.dong_name = h.umd_nm and left(d.dong_code,5) =
+		h.sgg_cd)
+		where sido_name = #{pSido} and gugun_name = #{pGugun} and
+		dong_name = #{pDong}
+	</select>
+	
+	<select id="selectByAptSeq" parameterType="String"
+		resultMap="homeInfo">
+		select d.sido_name, d.gugun_name, d.dong_name, h.apt_seq,
+		h.apt_nm,h.jibun, h.latitude, h.longitude
+		from dongcodes d join
+		houseinfos h
+		on(d.dong_name = h.umd_nm and left(d.dong_code,5) =
+		h.sgg_cd)
+		where apt_seq = #{aptSeq}
+	</select>
+
+	<select id="selectAptName" parameterType="String"
+		resultMap="homeInfo">
+		select d.sido_name, d.gugun_name, d.dong_name, h.apt_seq,
+		h.apt_nm,h.jibun, h.latitude, h.longitude
+		from dongcodes d join
+		houseinfos h
+		on(d.dong_name = h.umd_nm and left(d.dong_code,5) =
+		h.sgg_cd)
+		where apt_nm like #{PaptName}
+	</select>
+</mapper>
