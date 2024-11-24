@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserLoginRequestDto {
-	String id, pw;
+	String id, password;
 }
 

@@ -38,6 +38,7 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
     @Operation(summary = "로그인")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Session 사용 로그인 완료"),
@@ -45,7 +46,9 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     public void login(@RequestBody UserLoginRequestDto dto, HttpSession session) throws SQLException {
-        UserDto loginedUser = userService.login(dto.getId(), dto.getPw());
+    	System.out.println("dto.getId(): " + dto.getId());
+    	System.out.println("dto.getPassword(): " + dto.getPassword());
+        UserDto loginedUser = userService.login(dto.getId(), dto.getPassword());
 
         if (loginedUser != null) {
             session.setAttribute("user", loginedUser);
@@ -66,6 +69,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
     @Operation(summary = "회원가입")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "회원 생성 성공"),
@@ -82,6 +86,7 @@ public class UserController {
 
     // 회원 정보 조회
     @GetMapping
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
     @Operation(summary = "회원 정보 불러오기")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -105,6 +110,7 @@ public class UserController {
 
     // 회원 삭제
     @DeleteMapping
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
     @Operation(summary = "회원 삭제")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -124,6 +130,7 @@ public class UserController {
 
     // 회원 수정
     @PutMapping
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
     @Operation(summary = "회원 정보 갱신")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -156,6 +163,7 @@ public class UserController {
 
     // 비밀번호 재설정
     @PutMapping("/passwordReset")
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
     @Operation(summary = "회원 비밀번호 재설정")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
