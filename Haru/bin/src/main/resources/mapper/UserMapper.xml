@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.haru.model.mapper.UserMapper">
+
+	<!-- DB상 User column과 Mybatis상 User를 매핑 -->
+	<resultMap type="UserDto" id="user">
+		<id property="id" column="user_id" />
+		<result property="password" column="user_password" />
+		<result property="name" column="user_name" />
+		<result property="nickname" column="user_nickname" />
+		<result property="email" column="user_email" />
+		<result property="sido" column="user_sido" />
+		<result property="gugun" column="user_gugun" />
+		<result property="dong" column="user_dong" />
+		<result property="role" column="user_role" />
+	</resultMap>
+
+	<!-- query -->
+	<select id="login" parameterType="map" resultMap="user">
+		SELECT *
+		FROM users
+		WHERE user_id = #{id} and user_password = #{password}
+	</select>
+	
+	<insert id="insert" parameterType="UserDto">
+		INSERT INTO users (user_id, user_password, user_name, user_nickname, user_email, user_sido, user_gugun, user_dong, user_role)
+		VALUES (#{id}, #{password}, #{name}, #{nickname}, #{email}, #{sido}, #{gugun}, #{dong}, #{role})
+	</insert>
+	
+	<delete id="delete" parameterType="String">
+		DELETE FROM users
+		WHERE user_id = #{id}
+	</delete>
+	
+	<!-- 아이디와 역할은 수정할 수 없음 -->
+	<update id="update" parameterType="UserDto">
+		UPDATE FROM users
+		SET user_password = #{password}, user_name = #{name}, user_nickname = #{nickname}, user_email = #{email}, user_sido = #{sido}, user_gugun = #{gugun}, user_dong = #{dong}
+		WHERE user_id = #{id}
+	</update>
+	
+	<select id="select" parameterType="String" resultMap="user">
+		SELECT *
+		FROM users 
+		WHERE user_id = #{id}
+	</select>
+</mapper>
