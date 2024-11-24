@@ -27,7 +27,7 @@
 	</select>
 	
 	<!-- 매물 좋아요 누르기 -->
-	<insert id="likeRoom" parameterType="com.ssafy.passproject.model.RoomFavoriteDto">
+	<insert id="likeRoom" parameterType="com.ssafy.haru.model.RoomFavoriteDto">
 		INSERT INTO roomfavorites (user_id, room_id)
 		VALUES (#{userId}, #{roomId})
 	</insert>
