@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.haru.model.RoomDto;
+import com.ssafy.haru.model.RoomFavoriteDto;
 import com.ssafy.haru.model.RoomImageDto;
 import com.ssafy.haru.service.RoomService;
 
@@ -88,4 +91,35 @@ public class RoomController {
 	    return ResponseEntity.ok(response);
 	}
 
+	// 매물 정보 조회
+	@GetMapping("/detail/{roomId}")
+	@Operation(summary = "매물 상세 조회", description = "특정 매물의 상세 정보를 조회합니다.")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "매물 정보 조회 성공"),
+	    @ApiResponse(responseCode = "404", description = "매물 정보가 존재하지 않음")
+	})
+	public ResponseEntity<?> getRoomDetail(@PathVariable int roomId) {
+	    RoomDto roomDetail = roomService.selectByRoomId(roomId);
+	    if (roomDetail != null) {
+	        return ResponseEntity.ok(roomDetail);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("매물 정보를 찾을 수 없습니다.");
+	    }
+	}
+	
+	// 매물 좋아요 추가
+	@PostMapping("/like")
+	@Operation(summary = "매물 좋아요", description = "특정 매물에 좋아요를 추가합니다.")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "좋아요 성공"),
+	    @ApiResponse(responseCode = "400", description = "잘못된 요청")
+	})
+	public ResponseEntity<?> likeRoom(@RequestBody RoomFavoriteDto roomFavoriteDto) {
+	    try {
+	        roomService.likeRoom(roomFavoriteDto);
+	        return ResponseEntity.ok().body("좋아요가 성공적으로 추가되었습니다.");
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("좋아요 처리 중 오류가 발생했습니다.");
+	    }
+	}
 }

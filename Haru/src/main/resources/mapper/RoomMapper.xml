@@ -18,5 +18,17 @@
             (#{image.roomId}, #{image.imageUrl})
         </foreach>
     </insert>
-
+	
+	<!-- 매물 상세 정보 -->
+	<select id="selectByRoomId" parameterType="int"
+		resultMap="roomInfo">
+		select * from roominfos
+		where room_id = #{roomId}
+	</select>
+	
+	<!-- 매물 좋아요 누르기 -->
+	<insert id="likeRoom" parameterType="com.ssafy.passproject.model.RoomFavoriteDto">
+		INSERT INTO roomfavorites (user_id, room_id)
+		VALUES (#{userId}, #{roomId})
+	</insert>
 </mapper>
