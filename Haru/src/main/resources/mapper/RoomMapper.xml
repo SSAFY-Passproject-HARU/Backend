@@ -63,12 +63,6 @@
         select * from roominfos
         where room_id = #{roomId}
     </select>
-
-    <!-- 매물 좋아요 누르기 -->
-    <insert id="likeRoom" parameterType="com.ssafy.haru.model.RoomFavoriteDto">
-        INSERT INTO roomfavorites (user_id, room_id)
-        VALUES (#{userId}, #{roomId})
-    </insert>
     
     <!-- 아파트 번호로 아마트 이름 조회하기 -->
     <select id="findAptNameByAptSeq" resultType="String">

@@ -51,6 +51,7 @@ public class RoomService {
     @Transactional
     public List<RoomDto> getRoomsByAptSeq(String aptSeq) {
         return roomMapper.selectRoomsByAptSeq(aptSeq);
+    }
       
     // apt_seq로 apt_nm을 가져오는 메서드 추가
     public String getAptNameByAptSeq(String aptSeq) {
