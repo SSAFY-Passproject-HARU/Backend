@@ -14,6 +14,8 @@ public interface RoomMapper {
 	List<RoomDto> findRooms(String location, int minPrice, int maxPrice);
 	RoomDto selectByRoomId(int roomId);
 	void likeRoom(RoomFavoriteDto roomFavorite);
+	List<RoomImageDto> selectRoomImagesByRoomId(int roomId);
+	List<RoomDto> selectRoomsByAptSeq(String aptSeq);
 	
     // apt_seq를 통해 apt_nm을 가져오는 쿼리 추가
     String findAptNameByAptSeq(String aptSeq);

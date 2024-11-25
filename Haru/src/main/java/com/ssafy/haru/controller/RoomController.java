@@ -1,6 +1,7 @@
 package com.ssafy.haru.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,10 +61,16 @@ public class RoomController {
 	    // 2. 파일 처리
 	    if (files != null && files.length > 0 && !files[0].isEmpty()) {
 	        String today = new SimpleDateFormat("yyMMdd").format(new Date());
-	        String realPath = servletContext.getRealPath("/assets/upload/");
+	        String realPath = "C:/Users/SSAFY/Desktop/project/Frontend/public/images";
+	        // String realPath = "C:/SSAFY/workspace/pass-project/passproject_final/Frontend/public/images";
 	        String saveFolder = realPath + File.separator + today;
 	        File folder = new File(saveFolder);
-	        if (!folder.exists()) folder.mkdirs();
+	        if (!folder.exists()) {
+	        	folder.mkdirs();
+	        	if (!folder.exists()) {
+		        	System.out.println("폴더 안 만들어짐");
+		        }
+	        }
 	        
 	        List<RoomImageDto> fileInfos = new ArrayList<>();
 	        for (MultipartFile mfile : files) {
@@ -73,12 +80,18 @@ public class RoomController {
 	                        + originalFileName.substring(originalFileName.lastIndexOf('.'));
 	                
 	                // 파일 저장
-	                mfile.transferTo(new File(folder, saveFileName));
+	                try {
+	                    mfile.transferTo(new File(folder, saveFileName));
+	                    System.out.println("파일 저장 성공: " + folder + ", " + saveFileName);
+	                } catch (IOException e) {
+	                    e.printStackTrace();  // 오류 상세 출력
+	                    System.out.println("파일 저장 실패: " + saveFileName);
+	                }
 	                
 	                // roomimages 테이블에 저장할 데이터 생성
 	                RoomImageDto fileInfoDto = new RoomImageDto();
 	                fileInfoDto.setRoomId(roomId);  // 외래 키 설정
-	                fileInfoDto.setImageUrl("/assets/upload/" + today + "/" + saveFileName);
+	                fileInfoDto.setImageUrl(today + '/' + saveFileName);
 	                
 	                fileInfos.add(fileInfoDto);
 	            }
@@ -165,5 +178,34 @@ public class RoomController {
 	    }
 	}
 	
-
+	@GetMapping("/images/{roomId}")
+	@Operation(summary = "매물 이미지 조회", description = "특정 매물의 이미지 목록을 조회합니다.")
+	@ApiResponses(value = {
+		    @ApiResponse(responseCode = "200", description = "매물 이미지 조회 성공"),
+		    @ApiResponse(responseCode = "400", description = "잘못된 요청")
+		})
+    public ResponseEntity<?> getRoomImages(@PathVariable int roomId) {
+        List<RoomImageDto> imageList = roomService.getRoomImages(roomId);
+        if (imageList != null && !imageList.isEmpty()) {
+            return ResponseEntity.ok(imageList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미지 정보를 찾을 수 없습니다.");
+        }
+    }
+	
+	// aptSeq로 매물 리스트 조회
+    @GetMapping("/list/{aptSeq}")
+    @Operation(summary = "매물 리스트", description = "아파트 ID로 매물 리스트를 조회합니다.")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "리스트 조회 성공"),
+	    @ApiResponse(responseCode = "400", description = "잘못된 요청")
+	})
+    public ResponseEntity<?> getRoomsByAptSeq(@PathVariable String aptSeq) {
+        List<RoomDto> roomList = roomService.getRoomsByAptSeq(aptSeq);
+        if (roomList != null && !roomList.isEmpty()) {
+            return ResponseEntity.ok(roomList);
+        } else {
+            return ResponseEntity.status(404).body("해당 아파트에 대한 매물 정보가 없습니다.");
+        }
+    }
 }
