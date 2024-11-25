@@ -13,4 +13,6 @@ public interface RoomMapper {
 	void insertRoomImages(List<RoomImageDto> fileInfos);
 	RoomDto selectByRoomId(int roomId);
 	void likeRoom(RoomFavoriteDto roomFavorite);
+	List<RoomImageDto> selectRoomImagesByRoomId(int roomId);
+	List<RoomDto> selectRoomsByAptSeq(String aptSeq);
 }

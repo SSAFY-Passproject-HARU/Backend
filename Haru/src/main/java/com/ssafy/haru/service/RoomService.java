@@ -37,4 +37,14 @@ public class RoomService {
     public void likeRoom(RoomFavoriteDto roomFavoriteDto) {
         roomMapper.likeRoom(roomFavoriteDto);
     }
+    
+    @Transactional
+    public List<RoomImageDto> getRoomImages(int roomId) {
+        return roomMapper.selectRoomImagesByRoomId(roomId);
+    }
+    
+    @Transactional
+    public List<RoomDto> getRoomsByAptSeq(String aptSeq) {
+        return roomMapper.selectRoomsByAptSeq(aptSeq);
+    }
 }
