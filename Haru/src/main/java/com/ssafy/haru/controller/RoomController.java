@@ -28,14 +28,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.haru.model.RoomDto;
 import com.ssafy.haru.model.RoomFavoriteDto;
 import com.ssafy.haru.model.RoomImageDto;
+import com.ssafy.haru.model.response.RecommendRoomResponseDto;
 import com.ssafy.haru.service.RoomService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.ServletContext;
 
 @RestController
 @RequestMapping("/room")
@@ -45,8 +44,6 @@ public class RoomController {
 	
 	@Autowired
     private RoomService roomService;
-	@Autowired
-	private ServletContext servletContext;
 	
 	// 매물 등록
 	@PostMapping("/register")
@@ -235,5 +232,12 @@ public class RoomController {
         } else {
             return ResponseEntity.status(404).body("해당 아파트에 대한 매물 정보가 없습니다.");
         }
+    }
+    
+    // 추천 매물 리스트 조회
+    @GetMapping("/recommendation/{userId}")
+    public ResponseEntity<List<RecommendRoomResponseDto>> recommendRooms(@PathVariable String userId) {
+        List<RecommendRoomResponseDto> recommendedRooms = roomService.getRecommendations(userId);
+        return ResponseEntity.ok(recommendedRooms);
     }
 }

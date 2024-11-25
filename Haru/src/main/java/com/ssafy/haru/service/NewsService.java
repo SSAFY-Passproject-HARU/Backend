@@ -3,14 +3,15 @@ package com.ssafy.haru.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ssafy.haru.config.EnvConfig;
 import com.ssafy.haru.model.response.NewsResponseDto;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NewsService {
@@ -34,7 +35,7 @@ public class NewsService {
     }
     
     public NewsResponseDto searchNews(String query, int size, int page) {
-    	
+    	log.info(query);
         try {
             return this.restClient
             		.get()
