@@ -29,8 +29,8 @@ public class RoomService {
     }
     
     @Transactional
-    public List<RoomDto> selectRoomList(String location, Integer minPrice, Integer maxPrice) {
-        return roomMapper.findRooms(location, minPrice, maxPrice);
+    public List<RoomDto> selectRoomList(String sido, String gugun, String dong) {
+        return roomMapper.findRooms(sido, gugun, dong);
     }
     
     @Transactional

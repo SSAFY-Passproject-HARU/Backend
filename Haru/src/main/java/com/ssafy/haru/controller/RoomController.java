@@ -112,13 +112,13 @@ public class RoomController {
 	    @ApiResponse(responseCode = "204", description = "조회된 매물이 없음")
 	})
 	public ResponseEntity<?> getRoomDetailList(
-	        @RequestParam(required = true) String location, // 지역 필터
-	        @RequestParam(required = false) Integer minPrice, // 최소 가격 필터
-	        @RequestParam(required = false) Integer maxPrice // 최대 가격 필터
+	        @RequestParam(required = true) String sido,
+	        @RequestParam(required = true) String gugun,
+	        @RequestParam(required = true) String dong
 	) {
 	    try {
 	        // 조건에 따라 매물 목록 조회
-	        List<RoomDto> roomList = roomService.selectRoomList(location, minPrice, maxPrice);
+	        List<RoomDto> roomList = roomService.selectRoomList(sido, gugun, dong);
 	        if (roomList != null && !roomList.isEmpty()) {
 	            return ResponseEntity.ok(roomList); // 조회된 매물 리스트 반환
 	        } else {
