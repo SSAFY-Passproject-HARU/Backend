@@ -29,6 +29,11 @@ public class RoomService {
     }
     
     @Transactional
+    public List<RoomDto> selectRoomList(String location, Integer minPrice, Integer maxPrice) {
+        return roomMapper.findRooms(location, minPrice, maxPrice);
+    }
+    
+    @Transactional
     public RoomDto selectByRoomId(int roomId) {
         return roomMapper.selectByRoomId(roomId);
     }
@@ -36,5 +41,10 @@ public class RoomService {
     @Transactional
     public void likeRoom(RoomFavoriteDto roomFavoriteDto) {
         roomMapper.likeRoom(roomFavoriteDto);
+    }
+    
+    // apt_seq로 apt_nm을 가져오는 메서드 추가
+    public String getAptNameByAptSeq(String aptSeq) {
+        return roomMapper.findAptNameByAptSeq(aptSeq);
     }
 }
