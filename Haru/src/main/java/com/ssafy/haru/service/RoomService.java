@@ -9,6 +9,8 @@ import com.ssafy.haru.model.RoomDto;
 import com.ssafy.haru.model.RoomFavoriteDto;
 import com.ssafy.haru.model.RoomImageDto;
 import com.ssafy.haru.model.mapper.RoomMapper;
+import com.ssafy.haru.model.request.RecommendRoomRequestDto;
+import com.ssafy.haru.model.response.RecommendRoomResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +30,6 @@ public class RoomService {
         roomMapper.insertRoomImages(fileInfos);
     }
     
-    @Transactional
     public List<RoomDto> selectRoomList(String sido, String gugun, String dong) {
         return roomMapper.findRooms(sido, gugun, dong);
     }
@@ -57,5 +58,15 @@ public class RoomService {
     public String getAptNameByAptSeq(String aptSeq) {
         return roomMapper.findAptNameByAptSeq(aptSeq);
 
+    }
+    
+    public List<RecommendRoomResponseDto> getRecommendations(String userId) {
+        // Step 1: 유저가 찜한 매물의 평균 속성 계산
+    	RecommendRoomRequestDto preference = roomMapper.findUserPreferences(userId);
+
+        // Step 2: 거리 기반으로 가장 가까운 매물 추천
+        List<RecommendRoomResponseDto> recommendedRooms = roomMapper.findRecommendedRoomsByDistance(preference);
+
+        return recommendedRooms;
     }
 }
