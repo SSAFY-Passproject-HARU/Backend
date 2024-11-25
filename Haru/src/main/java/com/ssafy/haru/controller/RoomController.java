@@ -90,6 +90,32 @@ public class RoomController {
 	    
 	    return ResponseEntity.ok(response);
 	}
+	
+	// 매물 목록 조회
+	@GetMapping("/detail")
+	@Operation(summary = "매물 목록 조회", description = "여러 매물 정보를 한꺼번에 조회합니다.")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "매물 목록 조회 성공"),
+	    @ApiResponse(responseCode = "204", description = "조회된 매물이 없음")
+	})
+	public ResponseEntity<?> getRoomDetailList(
+	        @RequestParam(required = true) String location, // 지역 필터
+	        @RequestParam(required = false) Integer minPrice, // 최소 가격 필터
+	        @RequestParam(required = false) Integer maxPrice // 최대 가격 필터
+	) {
+	    try {
+	        // 조건에 따라 매물 목록 조회
+	        List<RoomDto> roomList = roomService.selectRoomList(location, minPrice, maxPrice);
+	        if (roomList != null && !roomList.isEmpty()) {
+	            return ResponseEntity.ok(roomList); // 조회된 매물 리스트 반환
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("조회된 매물이 없습니다.");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("매물 조회 중 오류가 발생했습니다.");
+	    }
+	}
 
 	// 매물 정보 조회
 	@GetMapping("/detail/{roomId}")
@@ -102,6 +128,22 @@ public class RoomController {
 	    RoomDto roomDetail = roomService.selectByRoomId(roomId);
 	    if (roomDetail != null) {
 	        return ResponseEntity.ok(roomDetail);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("매물 정보를 찾을 수 없습니다.");
+	    }
+	}
+	
+	@GetMapping("/detail/{roomId}/apt-name")
+	public ResponseEntity<?> getAptName(@PathVariable int roomId) {
+	    RoomDto room = roomService.selectByRoomId(roomId);
+	    if (room != null) {
+	        String aptSeq = room.getAptSeq();
+	        String aptName = roomService.getAptNameByAptSeq(aptSeq);
+	        if (aptName != null) {
+	            return ResponseEntity.ok(aptName); // 아파트 이름만 반환
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("아파트 정보를 찾을 수 없습니다.");
+	        }
 	    } else {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("매물 정보를 찾을 수 없습니다.");
 	    }
@@ -122,4 +164,6 @@ public class RoomController {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("좋아요 처리 중 오류가 발생했습니다.");
 	    }
 	}
+	
+
 }
