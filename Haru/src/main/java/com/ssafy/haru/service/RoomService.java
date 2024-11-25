@@ -53,6 +53,16 @@ public class RoomService {
     public List<RoomDto> getRoomsByAptSeq(String aptSeq) {
         return roomMapper.selectRoomsByAptSeq(aptSeq);
     }
+    
+    @Transactional
+    public List<RoomDto> getFavoriteRoomsByUserId(String userId) {
+        return roomMapper.selectFavoriteRoomsByUserId(userId);
+    }
+    
+    @Transactional
+    public void removeFavorite(RoomFavoriteDto roomFavoriteDto) {
+        roomMapper.deleteFavoriteRoom(roomFavoriteDto);
+    }
       
     // apt_seq로 apt_nm을 가져오는 메서드 추가
     public String getAptNameByAptSeq(String aptSeq) {

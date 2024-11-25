@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -174,6 +175,33 @@ public class RoomController {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("좋아요 처리 중 오류가 발생했습니다.");
 	    }
 	}
+	
+	// 매물 좋아요 삭제
+	@DeleteMapping("/removelike")
+	@Operation(summary = "매물 좋아요 삭제", description = "특정 매물에 누른 좋아요를 삭제합니다.")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "좋아요 취소 성공"),
+	    @ApiResponse(responseCode = "400", description = "잘못된 요청")
+	})
+    public String removeFavorite(@RequestBody RoomFavoriteDto roomFavoriteDto) {
+        try {
+            roomService.removeFavorite(roomFavoriteDto);
+            return "Favorite removed successfully";
+        } catch (Exception e) {
+            return "Error removing favorite: " + e.getMessage();
+        }
+    }
+	
+	// 매물 좋아요 목록
+	@GetMapping("/favorites")
+	@Operation(summary = "매물 좋아요 목록", description = "아이디로 찜한 매물 목록을 조회합니다")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "조회 성공"),
+	    @ApiResponse(responseCode = "400", description = "잘못된 요청")
+	})
+    public List<RoomDto> getFavoriteRoomsByUserId(@RequestParam String userId) {
+        return roomService.getFavoriteRoomsByUserId(userId);
+    }
 	
 	@GetMapping("/images/{roomId}")
 	@Operation(summary = "매물 이미지 조회", description = "특정 매물의 이미지 목록을 조회합니다.")

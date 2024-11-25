@@ -87,6 +87,13 @@
 		VALUES (#{userId}, #{roomId})
 	</insert>
 	
+	<!-- 유저 아이디와 방 아이디로 좋아요 삭제 -->
+	<delete id="deleteFavoriteRoom" parameterType="com.ssafy.haru.model.RoomFavoriteDto">
+	    DELETE FROM roomfavorites
+	    WHERE user_id = #{userId}
+	    AND room_id = #{roomId}
+	</delete>
+	
 	<!-- aptSeq로 매물 리스트 조회 -->
     <select id="selectRoomsByAptSeq" parameterType="String" resultMap="roomInfo">
         SELECT *
@@ -164,4 +171,13 @@
         AND r.room_type = #{preference.preferredRoomType}
         ORDER BY distance ASC
     </select>
+
+    <!-- 유저 아이디로 좋아요 목록 반환 -->
+	  <select id="selectFavoriteRoomsByUserId" parameterType="String" resultMap="roomInfo">
+	      SELECT r.*
+	      FROM roomfavorites rf
+	      JOIN roominfos r ON rf.room_id = r.room_id
+	      WHERE rf.user_id = #{userId}
+	  </select>
+
 </mapper>
