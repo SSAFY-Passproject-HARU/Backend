@@ -14,8 +14,10 @@ public interface RoomMapper {
 	List<RoomDto> findRooms(String sido, String gugun, String dong);
 	RoomDto selectByRoomId(int roomId);
 	void likeRoom(RoomFavoriteDto roomFavorite);
+	void deleteFavoriteRoom(RoomFavoriteDto roomFavorite);
 	List<RoomImageDto> selectRoomImagesByRoomId(int roomId);
 	List<RoomDto> selectRoomsByAptSeq(String aptSeq);
+	List<RoomDto> selectFavoriteRoomsByUserId(String userId);
 	
     // apt_seq를 통해 apt_nm을 가져오는 쿼리 추가
     String findAptNameByAptSeq(String aptSeq);
