@@ -11,7 +11,7 @@ import com.ssafy.haru.model.RoomImageDto;
 public interface RoomMapper {
 	void insertRoom(RoomDto room);
 	void insertRoomImages(List<RoomImageDto> fileInfos);
-	List<RoomDto> findRooms(String location, int minPrice, int maxPrice);
+	List<RoomDto> findRooms(String sido, String gugun, String dong);
 	RoomDto selectByRoomId(int roomId);
 	void likeRoom(RoomFavoriteDto roomFavorite);
 	
