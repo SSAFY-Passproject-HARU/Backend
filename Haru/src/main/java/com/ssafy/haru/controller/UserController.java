@@ -38,7 +38,7 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
+    @CrossOrigin(origins = "http://192.168.205.76:5174", allowCredentials="true")
     @Operation(summary = "로그인")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Session 사용 로그인 완료"),
@@ -59,7 +59,7 @@ public class UserController {
 
     // 로그아웃
     @DeleteMapping("/logout")
-    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
+    @CrossOrigin(origins = "http://192.168.205.76:5174", allowCredentials="true")
     @Operation(summary = "로그아웃")
     @ApiResponse(responseCode = "200", description = "로그아웃 완료")
     @ResponseStatus(HttpStatus.OK)
@@ -69,7 +69,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping
-    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
+    @CrossOrigin(origins = "http://192.168.205.76:5174", allowCredentials="true")
     @Operation(summary = "회원가입")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "회원 생성 성공"),

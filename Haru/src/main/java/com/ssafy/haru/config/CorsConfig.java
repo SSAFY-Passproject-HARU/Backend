@@ -11,7 +11,7 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:5173"); // 프론트엔드 주소
+        config.addAllowedOrigin("http://192.168.205.76:5174"); // 프론트엔드 주소
         config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
         config.addAllowedHeader("*"); // 모든 헤더 허용
         config.setAllowCredentials(true); // 쿠키 허용
