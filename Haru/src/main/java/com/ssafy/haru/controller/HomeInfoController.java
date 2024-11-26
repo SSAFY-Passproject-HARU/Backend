@@ -46,6 +46,7 @@ public class HomeInfoController {
 			list = service.selectAll();
 		}
 		
+		System.out.println(list);
 		return list;
 	}
 
@@ -54,7 +55,7 @@ public class HomeInfoController {
 	public List<HomeInfoDto> asyncShowList(@PathVariable("code") String code) throws SQLException {
 
 		List<HomeInfoDto> list = service.selectByAptSeq(code);
-		
+		System.out.println(list);
 		return list;
 	}
 

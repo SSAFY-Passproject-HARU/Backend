@@ -67,7 +67,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping
-    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
+    @CrossOrigin(origins = "http://192.168.205.76:5174", allowCredentials="true")
     @Operation(summary = "회원가입")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "회원 생성 성공"),
