@@ -46,8 +46,6 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     public void login(@RequestBody UserLoginRequestDto dto, HttpSession session) throws SQLException {
-    	System.out.println("dto.getId(): " + dto.getId());
-    	System.out.println("dto.getPassword(): " + dto.getPassword());
         UserDto loginedUser = userService.login(dto.getId(), dto.getPassword());
 
         if (loginedUser != null) {
@@ -102,8 +100,13 @@ public class UserController {
 
         UserInfoResponseDto dto = new UserInfoResponseDto();
         dto.setId(user.getId());
-        dto.setEmail(user.getEmail());
         dto.setName(user.getName());
+        dto.setNickname(user.getNickname());
+        dto.setEmail(user.getEmail());
+        dto.setSido(user.getSido());
+        dto.setGugun(user.getGugun());
+        dto.setDong(user.getDong());
+        dto.setRole(user.getRole());
 
         return dto;
     }

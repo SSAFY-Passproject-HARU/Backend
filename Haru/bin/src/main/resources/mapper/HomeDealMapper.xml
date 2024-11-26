@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper
-	namespace="com.ssafy.passproject.model.mapper.HomeDealMapper">
+	namespace="com.ssafy.haru.model.mapper.HomeDealMapper">
 
 	<!-- DB상 Member column과 Mybatis상 Member를 매핑 -->
 	<resultMap type="HomeDealDto" id="homeDeal">
