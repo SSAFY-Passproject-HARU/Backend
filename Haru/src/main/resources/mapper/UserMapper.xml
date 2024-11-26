@@ -37,8 +37,8 @@
 	
 	<!-- 아이디와 역할은 수정할 수 없음 -->
 	<update id="update" parameterType="UserDto">
-		UPDATE FROM users
-		SET user_password = #{password}, user_name = #{name}, user_nickname = #{nickname}, user_email = #{email}, user_sido = #{sido}, user_gugun = #{gugun}, user_dong = #{dong}
+		UPDATE users
+		SET user_password = #{password}, user_name = #{name}, user_nickname = #{nickname}, user_sido = #{sido}, user_gugun = #{gugun}, user_dong = #{dong}, user_role = #{role}
 		WHERE user_id = #{id}
 	</update>
 	

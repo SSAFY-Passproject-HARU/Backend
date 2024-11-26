@@ -16,7 +16,6 @@ public class RecommendRoomResponseDto {
     private double area;
     private int roomCount;
     private int bathroomCount;
-    private String roomType;
     private int roomFloor;
     private int totalFloors;
 }

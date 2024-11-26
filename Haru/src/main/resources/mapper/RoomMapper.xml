@@ -44,10 +44,18 @@
 
 
     <!-- 매물 목록 조회 -->
-    <select id="findRooms" parameterType="map" resultMap="roomInfo">
-		SELECT roominfos.*
-		FROM roominfos
-		WHERE roominfos.apt_seq IN (
+    <select id="findRooms" parameterType="map" resultType="com.ssafy.haru.model.RoomDto">
+		SELECT 
+            r.room_id AS roomId,
+            r.price,
+            r.apt_seq AS aptSeq,
+            r.area,
+            r.room_count AS roomCount,
+            r.bathroom_count AS bathroomCount,
+            r.room_floor AS roomFloor,
+            r.total_floors AS totalFloors
+		FROM roominfos r
+		WHERE r.apt_seq IN (
 		  SELECT houseinfos.apt_seq
 		  FROM houseinfos
 		  WHERE CONCAT(houseinfos.sgg_cd, houseinfos.umd_cd) = (
@@ -108,30 +116,13 @@
 		    AVG(r.area) AS avgArea,
 		    AVG(r.room_count) AS avgRoomCount,
 		    AVG(r.bathroom_count) AS avgBathroomCount,
-		    AVG(r.room_floor) AS avgRoomFloor,
-		    (
-		        SELECT r2.room_type
-		        FROM roominfos r2
-		        WHERE r2.room_id IN (
-		            SELECT rf.room_id
-		            FROM roomfavorites rf
-		            WHERE rf.user_id = #{userId}
-		        )
-		        GROUP BY r2.room_type
-		        ORDER BY COUNT(r2.room_type) DESC
-		        LIMIT 1
-		    ) AS preferredRoomType,
-		    u.user_sido AS sido,      
-		    u.user_gugun AS gugun,    
-		    u.user_dong AS dong       
+		    AVG(r.room_floor) AS avgRoomFloor 
 		FROM roominfos r
-		JOIN users u ON u.user_id = #{userId}  -- users 테이블과 연결
 		WHERE r.room_id IN (
 		    SELECT rf.room_id
 		    FROM roomfavorites rf
 		    WHERE rf.user_id = #{userId}
 		)
-
     </select>
     
     <!-- 유저 선호 평균과 가장 가까운 매물 조회 -->
@@ -143,7 +134,6 @@
             r.area,
             r.room_count AS roomCount,
             r.bathroom_count AS bathroomCount,
-            r.room_type AS roomType,
             r.room_floor AS roomFloor,
             r.total_floors AS totalFloors,
             <!-- 유클리드 거리 계산법 -->
@@ -166,9 +156,6 @@
               	AND d.dong_name = #{dong}
         	)
     	)
-		
-        <!-- preferredRoomType이 일치하는 매물만 선택 -->
-        AND r.room_type = #{preferredRoomType}
         ORDER BY distance ASC
     </select>
 
