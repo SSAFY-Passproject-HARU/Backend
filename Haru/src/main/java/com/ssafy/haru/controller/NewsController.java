@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class NewsController {
     private final NewsService newsService;
     
-    @CrossOrigin(origins = "http://192.168.205.76:5174", allowCredentials="true")
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials="true")
     @GetMapping("/api/news")
     public NewsResponseDto searchNews(@RequestParam String query,
                              @RequestParam(defaultValue = "20") int size,

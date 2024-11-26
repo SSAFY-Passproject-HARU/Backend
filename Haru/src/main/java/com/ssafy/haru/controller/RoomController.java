@@ -38,7 +38,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/room")
-@CrossOrigin(origins = { "http://192.168.205.76:5174/" }, maxAge = 60000)
+@CrossOrigin(origins = { "http://localhost:5173" }, maxAge = 60000)
 @Tag(name = "매물 API", description = "매물 관련 API입니다. ")
 public class RoomController {
 	
@@ -47,7 +47,7 @@ public class RoomController {
 	
 	// 매물 등록
 	@PostMapping("/register")
-	@CrossOrigin(origins = { "http://192.168.205.76:5174/" }, maxAge = 60000)
+	@CrossOrigin(origins = { "http://localhost:5173" }, maxAge = 60000)
 	@Operation(summary = "매물 등록", description = "매물 등록")
 	public ResponseEntity<?> registerRoom(@RequestPart RoomDto roomDto, @RequestParam MultipartFile[] files) throws Exception {
 	    Map<String, Object> response = new HashMap<>();
