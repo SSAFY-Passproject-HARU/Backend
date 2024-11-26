@@ -236,8 +236,10 @@ public class RoomController {
     
     // 추천 매물 리스트 조회
     @GetMapping("/recommendation/{userId}")
-    public ResponseEntity<List<RecommendRoomResponseDto>> recommendRooms(@PathVariable String userId) {
+    public ResponseEntity<List<RecommendRoomResponseDto>> recommendRooms(
+    		@PathVariable String userId) {
         List<RecommendRoomResponseDto> recommendedRooms = roomService.getRecommendations(userId);
+        System.out.println(recommendedRooms.toString());
         return ResponseEntity.ok(recommendedRooms);
     }
 }

@@ -121,9 +121,9 @@
 		        ORDER BY COUNT(r2.room_type) DESC
 		        LIMIT 1
 		    ) AS preferredRoomType,
-		    u.user_sido AS sido,      -- users 테이블의 user_sido
-		    u.user_gugun AS gugun,    -- users 테이블의 user_gugun
-		    u.user_dong AS dong       -- users 테이블의 user_dong
+		    u.user_sido AS sido,      
+		    u.user_gugun AS gugun,    
+		    u.user_dong AS dong       
 		FROM roominfos r
 		JOIN users u ON u.user_id = #{userId}  -- users 테이블과 연결
 		WHERE r.room_id IN (
@@ -148,11 +148,11 @@
             r.total_floors AS totalFloors,
             <!-- 유클리드 거리 계산법 -->
             SQRT(
-                POW((r.price - #{preference.avgPrice}) / 1000000, 2) +
-                POW((r.area - #{preference.avgArea}) * 20, 2) +
-                POW((r.room_count - #{preference.avgRoomCount}) * 100, 2) +
-                POW((r.bathroom_count - #{preference.avgBathroomCount}) * 100, 2) +
-                POW((r.room_floor - #{preference.avgRoomFloor}) * 25, 2)
+                POW((r.price - #{avgPrice}) / 1000000, 2) +
+                POW((r.area - #{avgArea}) * 20, 2) +
+                POW((r.room_count - #{avgRoomCount}) * 100, 2) +
+                POW((r.bathroom_count - #{avgBathroomCount}) * 100, 2) +
+                POW((r.room_floor - #{avgRoomFloor}) * 25, 2)
             ) AS distance
         FROM roominfos r
         WHERE r.apt_seq IN (
@@ -168,7 +168,7 @@
     	)
 		
         <!-- preferredRoomType이 일치하는 매물만 선택 -->
-        AND r.room_type = #{preference.preferredRoomType}
+        AND r.room_type = #{preferredRoomType}
         ORDER BY distance ASC
     </select>
 
