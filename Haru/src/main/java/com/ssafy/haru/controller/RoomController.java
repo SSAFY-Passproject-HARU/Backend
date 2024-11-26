@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.haru.model.RoomDto;
 import com.ssafy.haru.model.RoomFavoriteDto;
 import com.ssafy.haru.model.RoomImageDto;
-import com.ssafy.haru.model.response.RecommendRoomResponseDto;
 import com.ssafy.haru.service.RoomService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -236,10 +235,9 @@ public class RoomController {
     
     // 추천 매물 리스트 조회
     @GetMapping("/recommendation/{userId}")
-    public ResponseEntity<List<RecommendRoomResponseDto>> recommendRooms(
+    public ResponseEntity<List<RoomDto>> recommendRooms(
     		@PathVariable String userId) {
-        List<RecommendRoomResponseDto> recommendedRooms = roomService.getRecommendations(userId);
-        System.out.println(recommendedRooms.toString());
+        List<RoomDto> recommendedRooms = roomService.getRecommendations(userId);
         return ResponseEntity.ok(recommendedRooms);
     }
 }

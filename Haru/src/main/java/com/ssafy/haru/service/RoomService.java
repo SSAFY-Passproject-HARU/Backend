@@ -8,16 +8,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.haru.model.RoomDto;
 import com.ssafy.haru.model.RoomFavoriteDto;
 import com.ssafy.haru.model.RoomImageDto;
+import com.ssafy.haru.model.UserDto;
 import com.ssafy.haru.model.mapper.RoomMapper;
+import com.ssafy.haru.model.mapper.UserMapper;
 import com.ssafy.haru.model.request.RecommendRoomRequestDto;
-import com.ssafy.haru.model.response.RecommendRoomResponseDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RoomService {
     private final RoomMapper roomMapper;
+    private final UserMapper userMapper;
     
     @Transactional
     public int insertRoom(RoomDto room) {
@@ -70,12 +74,25 @@ public class RoomService {
 
     }
     
-    public List<RecommendRoomResponseDto> getRecommendations(String userId) {    	
+    public List<RoomDto> getRecommendations(String userId) {    	
     	// Step 1: 유저가 찜한 매물의 평균 속성 계산
     	RecommendRoomRequestDto preference = roomMapper.findUserPreferences(userId);
-
-        // Step 2: 거리 기반으로 가장 가까운 매물 추천
-        List<RecommendRoomResponseDto> recommendedRooms = roomMapper.findRecommendedRoomsByDistance(preference);
+    	
+    	UserDto user = userMapper.select(userId);
+    	List<RoomDto> recommendedRooms;
+    	
+    	if (preference == null) {
+    		System.out.println("preference null");
+    		recommendedRooms = roomMapper.findRooms(user.getSido(), user.getGugun(), user.getDong());
+    	} else {
+    		System.out.println("preference exist");
+        	preference.setSido(user.getSido());
+        	preference.setGugun(user.getGugun());
+        	preference.setDong(user.getDong());
+        	
+            // Step 2: 거리 기반으로 가장 가까운 매물 추천
+            recommendedRooms = roomMapper.findRecommendedRoomsByDistance(preference);
+    	}
 
         return recommendedRooms;
     }
